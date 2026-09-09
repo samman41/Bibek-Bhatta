@@ -24,7 +24,7 @@ const CONFIG = {
     ],
 
     // Direct WhatsApp Link
-    whatsappUrl: "https://wa.me/977-986-6387790",
+    whatsappUrl: "https://wa.me/9779866387790",
 
     // Save Contact (vCard) Details for Address Book
     vcard: {
