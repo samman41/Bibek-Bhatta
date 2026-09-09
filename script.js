@@ -10,30 +10,30 @@ const CONFIG = {
 
     // Primary Action Buttons (Grid)
     actions: [
-        { id: "call", label: "Call Now", url: "tel:+977", icon: "fas fa-phone-alt" },
-        { id: "gmail", label: "Email Us", url: "mailto:", icon: "fas fa-envelope" },
-        { id: "location", label: "Location", url: "#", icon: "fas fa-map-marker-alt" },
-        { id: "website", label: "Website", url: "#", icon: "fas fa-globe" }
+        { id: "call", label: "Call Now", url: "tel:+977-986-6387790", icon: "fas fa-phone-alt" },
+        { id: "gmail", label: "Email Us", url: "mailto:[bhagirathngt@gmail.com]", icon: "fas fa-envelope" },
+        { id: "location", label: "Location", url: "https://maps.app.goo.gl/kAYN8UBF11pZ58Ro6", icon: "fas fa-map-marker-alt" },
+        { id: "website", label: "Website", url: "https://bhagirathfabrication.com.np/", icon: "fas fa-globe" }
     ],
 
     // Social Media Links (Small circular icons)
     socials: [
-        { id: "facebook", url: "#", icon: "fab fa-facebook-f" },
+        { id: "facebook", url: "https://www.facebook.com/profile.php?id=61585769439702", icon: "fab fa-facebook-f" },
         { id: "instagram", url: "#", icon: "fab fa-instagram" },
         { id: "tiktok", url: "#", icon: "fab fa-tiktok" }
     ],
 
     // Direct WhatsApp Link
-    whatsappUrl: "https://wa.me/977",
+    whatsappUrl: "https://wa.me/977-986-6387790",
 
     // Save Contact (vCard) Details for Address Book
     vcard: {
         firstName: "Bibek",
         lastName: "Bhatta",
-        phone: "",
-        email: "",
+        phone: "+977-986-6387790",
+        email: "bhagirathngt@gmail.com",
         company: "Bhagirath Fabrication Pvt.Ltd",
-        website: ""
+        website: "https://bhagirathfabrication.com.np/"
     }
 };
 
@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         a.className = 'social-icon';
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
-        
+
         const i = document.createElement('i');
         i.className = social.icon;
         a.appendChild(i);
-        
+
         socialsRow.appendChild(a);
     });
 
@@ -71,13 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
         a.className = 'action-btn';
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
-        
+
         const i = document.createElement('i');
         i.className = action.icon;
-        
+
         const span = document.createElement('span');
         span.textContent = action.label;
-        
+
         a.appendChild(i);
         a.appendChild(span);
         actionsGrid.appendChild(a);
@@ -126,4 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(downloadLink);
         URL.revokeObjectURL(url);
     });
+
+    // 7. Set Visiting Card Image and Handle Download
+    const visitingCardPath = 'Image/Visiting card.jpg';
+    document.getElementById('visiting-card-img').src = visitingCardPath;
+
+    const saveCardBtn = document.getElementById('save-visiting-card-btn');
+    if (saveCardBtn) {
+        saveCardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const downloadLink = document.createElement('a');
+            downloadLink.href = visitingCardPath;
+            downloadLink.download = 'Bibek_Bhatta_Visiting_Card.jpg';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+    }
 });
