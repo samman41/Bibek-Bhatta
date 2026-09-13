@@ -162,7 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const blob = await response.blob();
                 const file = new File([blob], 'visiting-card.png', { type: blob.type });
 
-                if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+                if (isIOS && navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         files: [file],
                         title: 'Save Visiting Card'
