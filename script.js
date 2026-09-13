@@ -18,9 +18,7 @@ const CONFIG = {
 
     // Social Media Links (Small circular icons)
     socials: [
-        { id: "facebook", url: "https://www.facebook.com/profile.php?id=61585769439702", icon: "fab fa-facebook-f" },
-        { id: "instagram", url: "#", icon: "fab fa-instagram" },
-        { id: "tiktok", url: "#", icon: "fab fa-tiktok" }
+        { id: "facebook", url: "https://www.facebook.com/profile.php?id=61585769439702", icon: "fab fa-facebook-f" }
     ],
 
     // Direct WhatsApp Link
