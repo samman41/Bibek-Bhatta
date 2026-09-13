@@ -97,13 +97,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const whatsappNumber = v.phone.replace(/[^0-9]/g, '');
         const whatsappLink = `https://wa.me/${whatsappNumber}`;
         
-        const urls = [];
-        if (locationUrl) urls.push(`URL;TYPE=Location:${locationUrl}`);
-        urls.push(`URL;TYPE=WhatsApp:${whatsappLink}`);
+        let itemIndex = 1;
+        const customUrls = [];
+        const socialProfiles = [];
+
+        // WhatsApp
+        customUrls.push(`item${itemIndex}.URL:${whatsappLink}`);
+        customUrls.push(`item${itemIndex}.X-ABLabel:WhatsApp`);
+        itemIndex++;
         
+        // Location
+        if (locationUrl) {
+            customUrls.push(`item${itemIndex}.URL:${locationUrl}`);
+            customUrls.push(`item${itemIndex}.X-ABLabel:Location`);
+            itemIndex++;
+        }
+        
+        // Socials
         CONFIG.socials.forEach(s => {
-            const type = s.id.charAt(0).toUpperCase() + s.id.slice(1);
-            urls.push(`URL;TYPE=${type}:${s.url}`);
+            const label = s.id.charAt(0).toUpperCase() + s.id.slice(1);
+            customUrls.push(`item${itemIndex}.URL:${s.url}`);
+            customUrls.push(`item${itemIndex}.X-ABLabel:${label}`);
+            itemIndex++;
+            socialProfiles.push(`X-SOCIALPROFILE;type=${s.id.toLowerCase()}:${s.url}`);
         });
 
         const vcardData = [
@@ -114,8 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
             `ORG:${v.company}`,
             `TEL;TYPE=WORK,VOICE:${v.phone}`,
             `EMAIL;TYPE=PREF,INTERNET:${v.email}`,
-            `URL;TYPE=Website:${v.website}`,
-            ...urls,
+            `URL;TYPE=WORK:${v.website}`,
+            ...customUrls,
+            ...socialProfiles,
+            `NOTE:Nepatop, Bhagirath fabrication, Upvc`,
             "END:VCARD"
         ].join("\r\n");
 
