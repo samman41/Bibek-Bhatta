@@ -93,12 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const v = CONFIG.vcard;
 
         // Construct vCard 3.0 String
-        const notes = [];
         const locationUrl = CONFIG.actions.find(a => a.id === 'location')?.url || '';
-        if (locationUrl) notes.push(`Location: ${locationUrl}`);
-        notes.push(`WhatsApp: ${CONFIG.whatsappUrl}`);
+        const whatsappNumber = v.phone.replace(/[^0-9]/g, '');
+        const whatsappLink = `https://wa.me/${whatsappNumber}`;
+        
+        const urls = [];
+        if (locationUrl) urls.push(`URL;TYPE=Location:${locationUrl}`);
+        urls.push(`URL;TYPE=WhatsApp:${whatsappLink}`);
+        
         CONFIG.socials.forEach(s => {
-            notes.push(`${s.id.charAt(0).toUpperCase() + s.id.slice(1)}: ${s.url}`);
+            const type = s.id.charAt(0).toUpperCase() + s.id.slice(1);
+            urls.push(`URL;TYPE=${type}:${s.url}`);
         });
 
         const vcardData = [
@@ -109,9 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `ORG:${v.company}`,
             `TEL;TYPE=WORK,VOICE:${v.phone}`,
             `EMAIL;TYPE=PREF,INTERNET:${v.email}`,
-            `URL:${v.website}`,
-            ...CONFIG.socials.map(s => `X-SOCIALPROFILE;type=${s.id}:${s.url}`),
-            `NOTE:${notes.join("\\n")}`,
+            `URL;TYPE=Website:${v.website}`,
+            ...urls,
             "END:VCARD"
         ].join("\r\n");
 
@@ -133,14 +137,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const saveCardBtn = document.getElementById('save-visiting-card-btn');
     if (saveCardBtn) {
-        saveCardBtn.addEventListener('click', (e) => {
+        saveCardBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            const downloadLink = document.createElement('a');
-            downloadLink.href = visitingCardPath;
-            downloadLink.download = 'Bibek_Bhatta_Visiting_Card.jpg';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            try {
+                const response = await fetch(visitingCardPath);
+                const blob = await response.blob();
+                const file = new File([blob], 'visiting-card.png', { type: blob.type });
+
+                if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Save Visiting Card'
+                    });
+                } else {
+                    const downloadLink = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.download = 'Bibek_Bhatta_Visiting_Card.png';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(url);
+                }
+            } catch (error) {
+                console.error("Error downloading or sharing visiting card:", error);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = visitingCardPath;
+                downloadLink.download = 'Bibek_Bhatta_Visiting_Card.jpg';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
         });
     }
 });
