@@ -4,6 +4,7 @@ const CONFIG = {
     title: "Marketing Manager | Nepatop",
 
     // Paths to Images (Ensure these match the actual files in your directory)
+    profilePath: "Image/bibek.jpg",
     logoPath: "Image/logo.jpg",
     brandLogoPath: "Image/nepatop-logo.png",
     backgroundPath: "Image/background image.jpg",
@@ -36,9 +37,10 @@ const CONFIG = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Set Background and Logo
+    // 1. Set Background, Logos, and Profile Picture
     document.getElementById('background-container').style.backgroundImage = `url('${CONFIG.backgroundPath}')`;
-    document.getElementById('profile-logo').src = CONFIG.logoPath;
+    document.getElementById('profile-picture').src = CONFIG.profilePath;
+    document.getElementById('company-logo').src = CONFIG.logoPath;
     document.getElementById('brand-logo').src = CONFIG.brandLogoPath;
 
     // 2. Set Profile Information
